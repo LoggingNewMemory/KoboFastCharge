@@ -1,2 +1,6 @@
-# KoboGSIFastCharge
-Fast Charging Module by Modifying Battery Temperature
+![Banner](https://github.com/user-attachments/assets/f6586643-4ce9-486c-adbe-835017bfaefd)
+
+Kobo GSI Fast Charge
+
+Q: How does it work?
+YMD: Modify the battery temperature file to 38 celcius
