@@ -42,4 +42,4 @@ set_perm_recursive $MODPATH/KoboKanaeru 0 0 0774 0774
 
 sleep 1.5
 
-am start -a android.intent.action.VIEW -d https://t.me/KanagawaLabAnnouncement/144 >/dev/null 2>&1
+am start -a android.intent.action.VIEW -d https://t.me/KanagawaLabAnnouncement/147 >/dev/null 2>&1
