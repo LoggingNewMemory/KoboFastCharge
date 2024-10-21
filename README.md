@@ -2,5 +2,5 @@
 
 Kobo GSI Fast Charge
 
-Q: How does it work?
+Q: How does it work? <br />
 YMD: Modify the battery temperature file to 38 celcius
