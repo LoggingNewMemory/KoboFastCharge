@@ -28,7 +28,7 @@ ui_print "-----------------🗡-----------------"
 ui_print "            MODULE INFO             "
 ui_print "-----------------🗡-----------------"
 ui_print "Name : Fast Charging Support for GSI"
-ui_print "Version : V 1.0"
+ui_print "Version : V 2.0"
 ui_print "Support Root : Magisk / KernelSU"
 ui_print " "
 sleep 1.5
