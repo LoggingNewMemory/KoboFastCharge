@@ -1,5 +1,5 @@
 id=KoboFastCharge
-name=Kobo Fast Charging for GSI
-version=V 2.0
+name=Kobo Fast Charge
+version=V 3.0
 author=Kanagawa Yamada
-description=Support Fast Charging for GSI Systems by Modifying Battery Temperature | こぼ・かなえる
+description=Fast Charging by Modifying Battery Temperature | こぼ・かなえる

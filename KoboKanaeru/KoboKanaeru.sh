@@ -1,41 +1,47 @@
-chmod 644 /sys/class/power_supply/battery/temperature
-echo "38" > /sys/class/power_supply/battery/temperature
-chmod 444 /sys/class/power_supply/battery/temperature
+tweak() {
+	if [ -f $2 ]; then
+		chmod 644 $2 >/dev/null 2>&1
+		echo $1 >$2 2>/dev/null
+		chmod 444 $2 >/dev/null 2>&1
+	fi
+}
 
-chmod 644 /sys/devices/platform/bms/*
-chmod 644 /sys/devices/platform/charger/*
-chmod 644 /sys/devices/platform/main/*
-chmod 644 /sys/devices/platform/battery/*
-chmod 644 /sys/devices/mtk-battery/restricted_current
-chmod 644 /sys/devices/platform/pc_port/current_max
-chmod 644 /sys/devices/platform/constant_charge_current__max
+tweak 38 /sys/class/power_supply/battery/temperature
 
-echo '150' > /sys/devices/platform/bms/temp_cool
-echo '460' > /sys/devices/platform/bms/temp_hot
-echo '460' > /sys/devices/platform/bms/temp_warm
+for bms in /sys/devices/platform/bms/*; do
+    tweak 150 $bms/temp_cool
+    tweak 460 $bms/temp_hot
+    tweak 460 $bms/temp_warm
+done 
 
-echo '9000000' > /sys/devices/platform/charger/current_max
-echo '9000' > /sys/devices/platform/charger/sc_ibat_limit
-echo '14000' > /sys/devices/platform/charger/sc_stime
-echo '9000000' > /sys/devices/platform/charger/hw_current_max
-echo '9000000' > /sys/devices/platform/charger/pd_current_max
-echo '9000000' > /sys/devices/platform/charger/ctm_current_max
-echo '9000000' > /sys/devices/platform/charger/sdp_current_max
+for platformCharger in /sys/devices/platform/charger/*; do
+    tweak 9000000 $platformCharger/current_max
+    tweak 9000 $platformCharger/sc_ibat_limit
+    tweak 14000 $platformCharger/sc_stime
+    tweak 9000000 $platformCharger/hw_current_max
+    tweak 9000000 $platformCharger/pd_current_max
+    tweak 9000000 $platformCharger/ctm_current_max
+    tweak 9000000 $platformCharger/sdp_current_max
+done
 
-echo '9000000' > /sys/devices/platform/main/current_max
-echo '9000000' > /sys/devices/platform/main/constant_charge_current_max
+for platformMain in /sys/devices/platform/main/*; do
+    tweak 9000000 $platformMain/current_max
+    tweak 9000000 $platformMain/constant_charge_current_max
+done
 
-echo '9000000' > /sys/devices/platform/battery/current_max
-echo '9000000' > /sys/devices/platform/battery/constant_charge_current_max
+for platformBattery in /sys/devices/platform/battery/*; do
+    tweak 9000000 $platformBattery/current_max
+    tweak 9000000 $platformBattery/constant_charge_current_max
+done
 
-echo '10800000' > /sys/devices/mtk-battery/restricted_current
-echo '9000000' > /sys/devices/platform/pc_port/current_max
-echo '9000000' > /sys/devices/platform/constant_charge_current__max
+for powerSupplyCurrent in /sys/class/power_supply/*; do
+    tweak 5750000 $powerSupplyCurrent/constant_charge_current_max
+    tweak 12500000 $powerSupplyCurrent/input_current_limit
+done
 
-chmod 444 /sys/devices/platform/bms/*
-chmod 444 /sys/devices/platform/charger/*
-chmod 444 /sys/devices/platform/main/*
-chmod 444 /sys/devices/platform/battery/*
-chmod 444 /sys/devices/mtk-battery/restricted_current
-chmod 444 /sys/devices/platform/pc_port/current_max
-chmod 444 /sys/devices/platform/constant_charge_current__max
+tweak 12500000 /sys/class/power_supply/*/input_voltage_limit
+tweak 100 /sys/class/power_supply/*/siop_level
+tweak 500 /sys/class/power_supply/*/temp_warm
+tweak 10800000 /sys/devices/mtk-battery/restricted_current
+tweak 9000000 /sys/devices/platform/pc_port/current_max
+tweak 9000000 /sys/devices/platform/constant_charge_current__max

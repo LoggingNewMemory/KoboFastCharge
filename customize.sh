@@ -1,7 +1,7 @@
 LATESTARTSERVICE=true
 
 ui_print "🗡--------------------------------🗡"
-ui_print "     Fast Charging for GSI LH8n     " 
+ui_print "           Kobo Fast Charge         " 
 ui_print "🗡--------------------------------🗡"
 ui_print "         By: Kanagawa Yamada        "
 ui_print "------------------------------------"
@@ -27,9 +27,9 @@ sleep 1.5
 ui_print "-----------------🗡-----------------"
 ui_print "            MODULE INFO             "
 ui_print "-----------------🗡-----------------"
-ui_print "Name : Fast Charging Support for GSI"
-ui_print "Version : V 2.0"
-ui_print "Support Root : Magisk / KernelSU"
+ui_print "Name : Kobo Fast Charge"
+ui_print "Version : V 3.0"
+ui_print "Support Root : Magisk / KernelSU / APatch"
 ui_print " "
 sleep 1.5
 
@@ -42,4 +42,4 @@ set_perm_recursive $MODPATH/KoboKanaeru 0 0 0774 0774
 
 sleep 1.5
 
-am start -a android.intent.action.VIEW -d https://t.me/KanagawaLabAnnouncement/147 >/dev/null 2>&1
+am start -a android.intent.action.VIEW -d https://t.me/KanagawaLabAnnouncement/290 >/dev/null 2>&1
