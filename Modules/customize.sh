@@ -28,7 +28,7 @@ ui_print "-----------------🗡-----------------"
 ui_print "            MODULE INFO             "
 ui_print "-----------------🗡-----------------"
 ui_print "Name : Kobo Fast Charge"
-ui_print "Version : V 3.0"
+ui_print "Version : 4.0"
 ui_print "Support Root : Magisk / KernelSU / APatch"
 ui_print " "
 sleep 1.5
