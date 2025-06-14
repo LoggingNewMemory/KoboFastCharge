@@ -6,5 +6,5 @@ Note:
 Fast charging is following your charging board, how much your battery can take, and how much power that are used when you use your device. So don't expect really much
 
 Thanks To: <br />
-@RiProG-id
-@VelocityFox22
+RiProG-id <br />
+VelocityFox22 <br />
