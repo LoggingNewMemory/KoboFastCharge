@@ -1,29 +1,10 @@
 #!/system/bin/sh
 
-DEFAULT_CURRENT=3000000
-DEFAULT_VOLTAGE=5000000
-
-get_max_values() {
-    if [ -f "/sys/class/power_supply/battery/voltage_max_design" ]; then
-        MAX_VOLTAGE=$(cat /sys/class/power_supply/battery/voltage_max_design)
-    else
-        MAX_VOLTAGE=$DEFAULT_VOLTAGE
-    fi
-
-    if [ -f "/sys/class/power_supply/battery/charge_current_max" ]; then
-         MAX_CURRENT=$(cat /sys/class/power_supply/battery/charge_current_max)
-    else
-         MAX_CURRENT=$DEFAULT_CURRENT
-    fi
-    
-    if [ "$MAX_CURRENT" -lt 2000000 ]; then
-        MAX_CURRENT=3000000 
-    fi
-
-    if [ "$MAX_VOLTAGE" -gt 5500000 ]; then
-        MAX_CURRENT=9000000
-    fi
-}
+CURRENT_MAX=9000000
+VOLTAGE_MAX=12000000
+TEMP_COOL=150
+TEMP_HOT=480
+TEMP_WARM=480
 
 lock_val() {
     if [ -f "$2" ]; then
@@ -33,17 +14,15 @@ lock_val() {
     fi
 }
 
-get_max_values
-
 for zone in /sys/class/thermal/thermal_zone*/mode; do
     lock_val "disabled" "$zone"
 done
 
 find /sys/ -name "temp_cool" -o -name "temp_hot" -o -name "temp_warm" 2>/dev/null | while read path; do
     case "$path" in
-        *"cool"*) lock_val "150" "$path" ;;
-        *"hot"*)  lock_val "480"  "$path" ;;
-        *"warm"*) lock_val "480" "$path" ;;
+        *"cool"*) lock_val "$TEMP_COOL" "$path" ;;
+        *"hot"*)  lock_val "$TEMP_HOT"  "$path" ;;
+        *"warm"*) lock_val "$TEMP_WARM" "$path" ;;
     esac
 done
 
@@ -53,30 +32,30 @@ for feature in fast_charge force_fast_charge boost_mode turbo_mode pd_allowed al
     done
 done
 
-for limit in current_max constant_charge_current_max input_current_limit hw_current_max pd_current_max ctm_current_max sdp_current_max restricted_current; do
+for limit in current_max constant_charge_current constant_charge_current_max input_current_limit input_current_max hw_current_max pd_current_max ctm_current_max sdp_current_max restricted_current; do
     find /sys/class/power_supply/ -name "$limit" 2>/dev/null | while read path; do
-        lock_val "$MAX_CURRENT" "$path"
+        lock_val "$CURRENT_MAX" "$path"
     done
 done
 
 find /sys/class/power_supply/ -name "input_voltage_limit" 2>/dev/null | while read path; do
-        lock_val "$MAX_VOLTAGE" "$path"
+    lock_val "$VOLTAGE_MAX" "$path"
 done
 
 if [ -d "/sys/devices/mtk-battery" ]; then
-    lock_val "$MAX_CURRENT" "/sys/devices/mtk-battery/restricted_current"
-    lock_val "$MAX_CURRENT" "/sys/devices/mtk-battery/fc_current_limit"
+    lock_val "$CURRENT_MAX" "/sys/devices/mtk-battery/restricted_current"
+    lock_val "$CURRENT_MAX" "/sys/devices/mtk-battery/fc_current_limit"
 fi
 
 if [ -d "/sys/class/qcom-battery" ]; then
     lock_val "0" "/sys/class/qcom-battery/restricted_charging"
     lock_val "0" "/sys/class/qcom-battery/restrict_chg"
-    lock_val "$MAX_CURRENT" "/sys/class/qcom-battery/restricted_current"
-    lock_val "$MAX_CURRENT" "/sys/class/qcom-battery/restrict_cur" 
+    lock_val "$CURRENT_MAX" "/sys/class/qcom-battery/restricted_current"
+    lock_val "$CURRENT_MAX" "/sys/class/qcom-battery/restrict_cur" 
 fi
 
 find /sys/devices/platform/ -name "constant_charge_current_max" -o -name "input_current_limit" 2>/dev/null | while read path; do
-    lock_val "$MAX_CURRENT" "$path"
+    lock_val "$CURRENT_MAX" "$path"
 done
 
 lock_val "0" "/sys/class/power_supply/battery/input_current_limited"
